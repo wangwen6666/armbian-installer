@@ -12,12 +12,21 @@ on:
           - "standard"
           - "debian12_minimal"
           - "ubuntu24_minimal"
+      armbian_source:
+        description: "Armbian 镜像来源"
+        required: true
+        default: "official"
+        type: choice
+        options:
+          - "official"
+          - "github"
 
 jobs:
   build-release:
     runs-on: ubuntu-22.04
     env:
       VERSION_TYPE: ${{ github.event.inputs.version_type }}
+      ARMbian_SOURCE: ${{ github.event.inputs.armbian_source }}
 
     steps:
       - uses: actions/checkout@v4
