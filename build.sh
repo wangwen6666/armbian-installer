@@ -15,15 +15,15 @@ mkdir -p armbian
 # 用法示例：在 build.yml 的 env 里加  ARMbian_SOURCE: github
 SOURCE="${ARMbian_SOURCE:-official}"
 
-# 读取环境变量（与 build.yml 的 version_type 选项保持一致，勿改名）
-VERSION_TYPE="${VERSION_TYPE:-standard}"
+# 读取环境变量（与 build.yml 的 version_type 选项保持一致；旧名称保留兼容）
+VERSION_TYPE="${VERSION_TYPE:-ubuntu26_minimal}"
 case "$VERSION_TYPE" in
-  debian12_minimal)
+  debian12_minimal|debian13_minimal)
     echo "构建 debian13(trixie)-minimal armbian..."
     FRIENDLY="Trixie_current_minimal"
     FILE_NAME="Armbian_26.8.3_Uefi-x86_trixie_current_6.18.45_minimal.img.xz"
     ;;
-  ubuntu24_minimal)
+  ubuntu24_minimal|ubuntu26_minimal)
     echo "构建 ubuntu26(resolute)-minimal armbian..."
     FRIENDLY="Resolute_current_minimal"
     FILE_NAME="Armbian_26.8.3_Uefi-x86_resolute_current_6.18.45_minimal.img.xz"
