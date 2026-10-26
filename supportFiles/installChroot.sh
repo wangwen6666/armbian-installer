@@ -19,7 +19,7 @@ dpkg-reconfigure --frontend=noninteractive locales
 update-locale LANG=en_US.UTF-8
 
 echo Install packages
-apt-get install -y --no-install-recommends linux-image-amd64 live-boot systemd-sysv xz-utils
+apt-get install -y --no-install-recommends linux-image-amd64 live-boot systemd-sysv xz-utils gzip
 apt-get install -y parted openssh-server bash-completion cifs-utils curl dbus dosfstools firmware-linux-free gddrescue gdisk iputils-ping isc-dhcp-client less nfs-common ntfs-3g openssh-client open-vm-tools procps vim wimtools wget
 
 echo Clean apt post-install

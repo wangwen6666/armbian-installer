@@ -33,8 +33,7 @@ if ! head -c 3 "$OUTPUT_PATH" | od -An -tx1 | grep -q "1f 8b"; then
 fi
 
 echo "下载istoreos成功!"
-echo "正在解压为:istoreos.img"
-gzip -d openwrt/istoreos.img.gz
+# 不解压，直接把 .img.gz 放进 ISO（显著减小成品体积），写盘时由 live 环境里的 ddd 用 gzip -dc 边解压边写入
 ls -lh openwrt/
 echo "准备合成 istoreos 安装器"
 
@@ -42,6 +41,6 @@ mkdir -p output
 docker run --privileged --rm \
         -v $(pwd)/output:/output \
         -v $(pwd)/supportFiles:/supportFiles:ro \
-        -v $(pwd)/openwrt/istoreos.img:/mnt/istoreos.img \
+        -v $(pwd)/openwrt/istoreos.img.gz:/mnt/istoreos.img.gz \
         debian:bookworm \
         /supportFiles/istoreos/build.sh
