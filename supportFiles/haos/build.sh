@@ -49,7 +49,11 @@ echo Create directories that will contain files for our live environment files a
 mkdir -p $HOME/LIVE_BOOT/{staging/{EFI/boot,boot/grub/x86_64-efi,isolinux,live},tmp}
 
 echo Copy the HAOS image into the live environment and compress it
-cp /mnt/haos.img ${HOME}/LIVE_BOOT/chroot/mnt/
+if [ -f /mnt/haos.img.xz ]; then
+    cp /mnt/haos.img.xz ${HOME}/LIVE_BOOT/chroot/mnt/
+else
+    cp /mnt/haos.img ${HOME}/LIVE_BOOT/chroot/mnt/
+fi
 ls -lh ${HOME}/LIVE_BOOT/chroot/mnt/
 mksquashfs $HOME/LIVE_BOOT/chroot $HOME/LIVE_BOOT/staging/live/filesystem.squashfs -e boot
 

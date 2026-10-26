@@ -36,35 +36,42 @@ case "$magic" in
     ;;
 esac
 
-# 根据扩展名解压
+# 根据扩展名处理：xz 保持压缩直接进 ISO（解压后超 GitHub 2GB 限制，写盘时由 ddd 流式解压）；gz/zip 先解压
 extension="${filename##*.}"
-case $extension in
-  gz)
-    echo "gz 正在解压 $OUTPUT_PATH"
-    gunzip -f "$OUTPUT_PATH"
-    final_name=$(find imm -name '*.img' -print -quit)
-    mv "$final_name" "imm/haos.img"
-    ;;
-  zip)
-    echo "zip 正在解压 $OUTPUT_PATH"
-    unzip -j -o "$OUTPUT_PATH" -d imm/
-    final_name=$(find imm -name '*.img' -print -quit)
-    mv "$final_name" "imm/haos.img"
-    ;;
-  xz)
-    echo "xz 正在解压 $OUTPUT_PATH"
-    xz -d --keep "$OUTPUT_PATH"
-    final_name="${OUTPUT_PATH%.*}"
-    mv "$final_name" "imm/haos.img"
-    ;;
-  *)
-    echo "不支持的压缩格式: $extension（仅支持 .gz/.xz/.zip）"
-    exit 1
-    ;;
-esac
+if [ "$extension" = "xz" ]; then
+  echo "xz 镜像保持压缩状态，直接合成安装器（写盘时流式解压）"
+  mv "$OUTPUT_PATH" "imm/haos.img.xz"
+else
+  case $extension in
+    gz)
+      echo "gz 正在解压 $OUTPUT_PATH"
+      gunzip -f "$OUTPUT_PATH"
+      final_name=$(find imm -name '*.img' -print -quit)
+      mv "$final_name" "imm/haos.img"
+      ;;
+    zip)
+      echo "zip 正在解压 $OUTPUT_PATH"
+      unzip -j -o "$OUTPUT_PATH" -d imm/
+      final_name=$(find imm -name '*.img' -print -quit)
+      mv "$final_name" "imm/haos.img"
+      ;;
+    *)
+      echo "不支持的压缩格式: $extension（仅支持 .gz/.xz/.zip）"
+      exit 1
+      ;;
+  esac
+fi
 
-if [ ! -f "imm/haos.img" ]; then
-  echo "错误：最终文件 imm/haos.img 不存在"
+# 按实际存在的文件挂载
+MOUNT_SRC="imm/haos.img"
+MOUNT_DST="/mnt/haos.img"
+if [ -f "imm/haos.img.xz" ]; then
+  MOUNT_SRC="imm/haos.img.xz"
+  MOUNT_DST="/mnt/haos.img.xz"
+fi
+
+if [ ! -f "$MOUNT_SRC" ]; then
+  echo "错误：最终镜像文件 $MOUNT_SRC 不存在"
   exit 1
 fi
 
@@ -76,6 +83,6 @@ mkdir -p output
 docker run --privileged --rm \
         -v "$(pwd)/output:/output" \
         -v "$(pwd)/supportFiles:/supportFiles:ro" \
-        -v "$(pwd)/imm/haos.img:/mnt/haos.img" \
+        -v "$(pwd)/${MOUNT_SRC}:${MOUNT_DST}" \
         debian:bookworm \
         /supportFiles/haos/build.sh

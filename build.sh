@@ -71,8 +71,8 @@ fi
 
 echo "下载armbian成功!"
 file armbian/armbian.img.xz
-echo "正在解压为:armbian.img"
-xz -d armbian/armbian.img.xz
+# 注意：不解压，直接把 .img.xz 放进 ISO（解压后约 2.4GB 会超过 GitHub Release 单文件 2GB 上限）
+# 写盘时由 live 环境里的 ddd 用 xz -dc 边解压边写入
 ls -lh armbian/
 echo "准备合成 armbian 安装器"
 
@@ -80,6 +80,6 @@ mkdir -p output
 docker run --privileged --rm \
         -v $(pwd)/output:/output \
         -v $(pwd)/supportFiles:/supportFiles:ro \
-        -v $(pwd)/armbian/armbian.img:/mnt/armbian.img \
+        -v $(pwd)/armbian/armbian.img.xz:/mnt/armbian.img.xz \
         debian:bookworm \
         /supportFiles/build.sh

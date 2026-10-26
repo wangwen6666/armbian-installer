@@ -86,9 +86,17 @@ install_system() {
     
     echo -e "\nStarting system write... (Press Ctrl+C to cancel)"
     sleep 2
-    
-    # Perform write operation
-    dd if="$image_file" of="$target_disk" bs=4M conv=fsync status=progress
+
+    # Perform write operation（xz 压缩镜像边解压边写入，节省空间与时间）
+    case "$image_file" in
+        *.xz)
+            echo "Detected xz compressed image, streaming decompress + write..."
+            xz -dc "$image_file" | dd of="$target_disk" bs=4M conv=fsync status=progress
+            ;;
+        *)
+            dd if="$image_file" of="$target_disk" bs=4M conv=fsync status=progress
+            ;;
+    esac
     
     echo "──────────────────────────────────────"
     echo "Armbian installed successfully:"
@@ -100,7 +108,7 @@ while true; do
     
     case $choice in
         1)
-            install_system "armbian.img"
+            install_system "armbian.img.xz"
             break
             ;;
         0)
