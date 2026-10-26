@@ -28,6 +28,7 @@
 5. armbian 安装器 目前构建2种 一种是minimal 一种是标准版 较低配置的x86-64设备建议使用minimal 比如（wyse3040瘦客户机）
 6. 未来可能融入自编译armbian的流程
 7. 支持自定义openwrt镜像生成iso安装器,其中openwrt镜像的压缩包格式是`img.gz` `img.zip` `img.xz`三种
+8. HAOS 安装器使用**冬瓜HAOS**（国内优化版 Home Assistant OS）的 x86-64-pc 镜像，默认内置最新版，同样输入 `ddd` 写盘安装。镜像来自冬瓜官方下载站 https://fw.wghaos.com/haos/x86-64-pc/ ，构建时可通过 `download_url` 参数替换任意版本的 `.img.gz/.img.xz/.img.zip` 直链（官方 HAOS 镜像同样适用）
 
 
 

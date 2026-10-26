@@ -1,0 +1,6 @@
+# 保证 shell 脚本在 CI（Linux）里可执行，避免 Windows 检出时转成 CRLF
+*.sh text eol=lf
+*.cfg text eol=lf
+*.list text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
