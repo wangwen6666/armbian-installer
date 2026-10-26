@@ -43,5 +43,5 @@ docker run --privileged --rm \
         -v $(pwd)/output:/output \
         -v $(pwd)/supportFiles:/supportFiles:ro \
         -v $(pwd)/imm/immortalwrt.img:/mnt/immortalwrt.img \
-        debian:buster \
+        debian:bookworm \
         /supportFiles/immortalwrt/build.sh

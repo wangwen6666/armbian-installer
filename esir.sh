@@ -37,5 +37,5 @@ docker run --privileged --rm \
         -v $(pwd)/output:/output \
         -v $(pwd)/supportFiles:/supportFiles:ro \
         -v $(pwd)/imm/esiropenwrt.img:/mnt/esiropenwrt.img \
-        debian:buster \
+        debian:bookworm \
         /supportFiles/esirplayground/build.sh

@@ -37,5 +37,5 @@ docker run --privileged --rm \
         -v $(pwd)/output:/output \
         -v $(pwd)/supportFiles:/supportFiles:ro \
         -v $(pwd)/imm/ezopwrt.img:/mnt/ezopwrt.img \
-        debian:buster \
+        debian:bookworm \
         /supportFiles/ezopwrt/build.sh

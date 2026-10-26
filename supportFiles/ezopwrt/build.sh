@@ -1,15 +1,16 @@
 #!/bin/bash
+set -e
 # Based from https://willhaley.com/blog/custom-debian-live-environment/
 
 echo Install required tools
 apt-get update
-apt-get -y install debootstrap squashfs-tools xorriso isolinux syslinux-efi  grub-pc-bin grub-efi-amd64-bin mtools dosfstools parted
+apt-get -y install debootstrap squashfs-tools gdisk xorriso isolinux syslinux-efi  grub-pc-bin grub-efi-amd64-bin mtools dosfstools parted
 
 echo Create directory where we will make the image
 mkdir -p $HOME/LIVE_BOOT
 
 echo Install Debian
-debootstrap --arch=amd64 --variant=minbase buster $HOME/LIVE_BOOT/chroot http://ftp.us.debian.org/debian/
+debootstrap --arch=amd64 --variant=minbase bookworm $HOME/LIVE_BOOT/chroot http://deb.debian.org/debian/
 
 echo Copy supporting documents into the chroot
 cp -v /supportFiles/installChroot.sh $HOME/LIVE_BOOT/chroot/installChroot.sh

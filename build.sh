@@ -81,5 +81,5 @@ docker run --privileged --rm \
         -v $(pwd)/output:/output \
         -v $(pwd)/supportFiles:/supportFiles:ro \
         -v $(pwd)/armbian/armbian.img:/mnt/armbian.img \
-        debian:buster \
+        debian:bookworm \
         /supportFiles/build.sh
